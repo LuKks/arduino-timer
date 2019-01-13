@@ -1,5 +1,5 @@
 # arduino-timer
-https://amxmodx-es.com/Thread-Arduino-tasks-timers-delay-sin-bloquear
+Passing old posts to GitHub. https://amxmodx-es.com/Thread-Arduino-tasks-timers-delay-sin-bloquear
 
 Note: it's old text.
 
