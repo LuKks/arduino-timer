@@ -6,21 +6,23 @@ class Timer
 	public:
 		Timer();
 
-		bool second(int i, unsigned long secs);
-		bool milli(int i, unsigned long ms);
 		bool micro(int i, unsigned long ms);
+		bool set(int i, unsigned long millis);
+		bool seconds(int i, unsigned long secs);
 
 		bool is(int i);
-		bool check(int i);
 		bool exists(int i);
-		bool remove(int i);
+		bool clear(int i);
 
-		float leftSeconds(int i);
-		float leftMillis(int i);
 		long leftMicros(int i);
+		float leftMillis(int i);
+		float leftSeconds(int i);
 		
 	private:
-		unsigned long _tasks[16][2];
+		bool check_expired(int i);
+		bool expired;
+		
+		unsigned long tasks[16][2];
 };
 
 #endif

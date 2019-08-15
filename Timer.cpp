@@ -1,45 +1,28 @@
 #include "Timer.h"
 #include "Arduino.h"
 
-Timer::Timer() {
-
-}
-
-bool Timer::second(int i, unsigned long secs) {
-	return micro(i, secs * 1000000);
-}
-
-bool Timer::milli(int i, unsigned long ms) {
-	return micro(i, ms * 1000);
-}
+Timer::Timer() {}
 
 bool Timer::micro(int i, unsigned long ms) {
-	check(i); //check expired
+	expired = Timer::check_expired(i);
 
-	if(_tasks[i][1] > 2) {
-		return false; //if there is time yet, false
+	//cleared or expired
+	if(tasks[i][1] < 2) {
+		tasks[i][0] = micros(); //start
+		tasks[i][1] = ms + 2; //time + state
 	}
-
-	_tasks[i][0] = micros(); //start
-	_tasks[i][1] = ms + 2; //ms + state
-	return true;
+	
+	return expired;
 }
 
 bool Timer::is(int i) {
-	check(i); //check expired
-
-	if(_tasks[i][1] != 1) {
-		return false; //if not expired, false
-	}
-
-	_tasks[i][1] = 0; //set used
-	return true;
+	return Timer::check_expired(i) ? Timer::clear(i) : false;
 }
 
-bool Timer::check(int i) {
-	//(not used && micros() - start >= ms)
-	if(_tasks[i][1] >= 2 && micros() - _tasks[i][0] >= _tasks[i][1] - 2) {
-		_tasks[i][1] = 1; //set expired
+bool Timer::check_expired(int i) {
+	//(exists && micros() - start >= ms)
+	if(tasks[i][1] >= 2 && micros() - tasks[i][0] >= tasks[i][1] - 2) {
+		tasks[i][1] = 1; //expire
 		return true;
 	}
 	
@@ -47,22 +30,21 @@ bool Timer::check(int i) {
 }
 
 bool Timer::exists(int i) {
-	return _tasks[i][1] >= 2;
+	return tasks[i][1] >= 2;
 }
 
-bool Timer::remove(int i) {
-	_tasks[i][1] = 0;
+bool Timer::clear(int i) {
+	tasks[i][1] = 0;
 	return true;
 }
 
-float Timer::leftSeconds(int i) {
-	return leftMicros(i) / 1000000;
-}
-
-float Timer::leftMillis(int i) {
-	return leftMicros(i) / 1000;
-}
-
 long Timer::leftMicros(int i) {
-	return _tasks[i][1] <= 2 ? 0 : micros() - _tasks[i][0];
-} 
+	return tasks[i][1] <= 2 ? 0 : (tasks[i][1] - (micros() - tasks[i][0]));
+}
+
+//helpers
+bool Timer::set(int i, unsigned long millis) { return Timer::micro(i, millis * 1000); }
+bool Timer::seconds(int i, unsigned long secs) { return Timer::micro(i, secs * 1000000); }
+
+float Timer::leftMillis(int i) { return Timer::leftMicros(i) / 1000; }
+float Timer::leftSeconds(int i) { return Timer::leftMicros(i) / 1000000; }
