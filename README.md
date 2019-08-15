@@ -1,6 +1,6 @@
 # arduino-timer
 
-Timers without blocking ![in 50 lines](https://github.com/LuKks/arduino-timer/Timer.cpp) for Arduino.
+Timers without blocking [in 50 lines](https://github.com/LuKks/arduino-timer/Timer.cpp) for Arduino.
 
 ![](https://img.shields.io/maintenance/yes/2019.svg?style=flat-square) ![](https://img.shields.io/github/size/LuKks/arduino-timer/Timer.cpp.svg) ![](https://img.shields.io/github/license/LuKks/arduino-timer.svg)
 
@@ -36,7 +36,7 @@ void loop() {
 ```
 
 ## Install
-![Download ZIP](https://github.com/LuKks/arduino-timer/archive/master.zip)\
+[Download ZIP](https://github.com/LuKks/arduino-timer/archive/master.zip)\
 In Arduino IDE go to: Sketch -> Include Library -> Add .ZIP library
 
 ## Description
